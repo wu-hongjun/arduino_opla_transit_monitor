@@ -116,9 +116,7 @@ void loop() {
       Serial.print("DISCONNECTED");
     }
     Serial.print(", Mode=");
-    Serial.print(modeManager.getCurrentMode());
-    Serial.print(", State=");
-    Serial.print(modeManager.getCurrentState());
+    Serial.print(modeManager.getCurrentModeName());
     Serial.print(", Uptime=");
     Serial.print(millis() / 1000);
     Serial.println("s");
