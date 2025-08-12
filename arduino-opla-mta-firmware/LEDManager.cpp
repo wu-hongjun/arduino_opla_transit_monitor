@@ -1,109 +1,79 @@
 #include "LEDManager.h"
 #include "WiFiManager.h"
 
-// Color definitions
-const RGBColor LEDManager::RED = {255, 0, 0};
-const RGBColor LEDManager::YELLOW = {255, 255, 0};
-const RGBColor LEDManager::GREEN = {0, 255, 0};
-const RGBColor LEDManager::OFF = {0, 0, 0};
+// No color definitions needed for built-in LED
 
 LEDManager::LEDManager() {
-  currentL1Color = OFF;
-  currentL2Color = OFF;
-  targetL1Color = OFF;
-  targetL2Color = OFF;
-  lastUpdate = 0;
+  // Constructor - nothing needed for simple built-in LED control
 }
 
 void LEDManager::begin() {
-  // Initialize LED pins - Note: Arduino Opla uses different LED control
-  // This is a placeholder implementation for basic testing
-  Serial.println("LED Manager initialized");
+  // Initialize built-in RGB LED pins using WiFiDrv
+  WiFiDrv::pinMode(25, OUTPUT); // Green LED
+  WiFiDrv::pinMode(26, OUTPUT); // Red LED  
+  WiFiDrv::pinMode(27, OUTPUT); // Blue LED
   
-  // Set initial state
-  setL1Color(OFF);
-  setL2Color(OFF);
+  Serial.println("LED Manager initialized with MKR WiFi 1010 built-in RGB LED");
+  
+  // Set initial state (WiFi disconnected = red)
+  setWiFiStatusLED(WIFI_DISCONNECTED);
 }
 
 void LEDManager::update() {
-  unsigned long now = millis();
-  if (now - lastUpdate >= UPDATE_INTERVAL_MS) {
-    // Smooth color transitions
-    interpolateColor(currentL1Color, targetL1Color, 0.1f);
-    interpolateColor(currentL2Color, targetL2Color, 0.1f);
-    
-    lastUpdate = now;
-  }
+  // No longer needed for simple built-in LED control
 }
 
 void LEDManager::setWiFiStatus(WiFiConnectionStatus status) {
-  switch (status) {
-    case WIFI_DISCONNECTED:
-      targetL1Color = RED;
-      break;
-    case WIFI_CONNECTING:
-      targetL1Color = YELLOW;
-      break;
-    case WIFI_CONNECTED:
-      targetL1Color = GREEN;
-      break;
-  }
+  setWiFiStatusLED(status);
 }
 
 void LEDManager::setDataStatus(DataStatus status) {
+  // For now, we'll just log data status since we're using the built-in LED for WiFi only
+  Serial.print("Data Status: ");
   switch (status) {
     case DATA_ERROR:
-      targetL2Color = RED;
+      Serial.println("ERROR");
       break;
     case DATA_LOADING:
-      targetL2Color = YELLOW;
+      Serial.println("LOADING");
       break;
     case DATA_SUCCESS:
-      targetL2Color = GREEN;
+      Serial.println("SUCCESS");
       break;
   }
 }
 
-void LEDManager::setL1Color(RGBColor color) {
-  // Placeholder implementation - replace with actual Arduino Opla LED control
-  Serial.print("L1 LED: R=");
-  Serial.print(color.r);
-  Serial.print(" G=");
-  Serial.print(color.g);
-  Serial.print(" B=");
-  Serial.println(color.b);
-}
-
-void LEDManager::setL2Color(RGBColor color) {
-  // Placeholder implementation - replace with actual Arduino Opla LED control
-  Serial.print("L2 LED: R=");
-  Serial.print(color.r);
-  Serial.print(" G=");
-  Serial.print(color.g);
-  Serial.print(" B=");
-  Serial.println(color.b);
-}
-
-void LEDManager::interpolateColor(RGBColor& current, const RGBColor& target, float speed) {
-  current.r = current.r + (target.r - current.r) * speed;
-  current.g = current.g + (target.g - current.g) * speed;
-  current.b = current.b + (target.b - current.b) * speed;
+void LEDManager::setWiFiStatusLED(WiFiConnectionStatus status) {
+  static WiFiConnectionStatus lastStatus = WIFI_DISCONNECTED;
   
-  // Update actual LED if color changed significantly
-  static RGBColor lastL1 = {255, 255, 255}; // Force initial update
-  static RGBColor lastL2 = {255, 255, 255};
-  
-  if (abs(current.r - lastL1.r) > 5 || abs(current.g - lastL1.g) > 5 || abs(current.b - lastL1.b) > 5) {
-    if (&current == &currentL1Color) {
-      setL1Color(current);
-      lastL1 = current;
+  // Only update LED and print if status changed
+  if (status != lastStatus) {
+    switch (status) {
+      case WIFI_DISCONNECTED:
+        // Red LED on (pin 26)
+        WiFiDrv::digitalWrite(25, LOW);  // Green off
+        WiFiDrv::digitalWrite(26, HIGH); // Red on
+        WiFiDrv::digitalWrite(27, LOW);  // Blue off
+        Serial.println("WiFi Status LED: RED (Disconnected)");
+        break;
+        
+      case WIFI_CONNECTING:
+        // Yellow LED (Red + Green on)
+        WiFiDrv::digitalWrite(25, HIGH); // Green on
+        WiFiDrv::digitalWrite(26, HIGH); // Red on  
+        WiFiDrv::digitalWrite(27, LOW);  // Blue off
+        Serial.println("WiFi Status LED: YELLOW (Connecting)");
+        break;
+        
+      case WIFI_CONNECTED:
+        // Green LED on (pin 25)
+        WiFiDrv::digitalWrite(25, HIGH); // Green on
+        WiFiDrv::digitalWrite(26, LOW);  // Red off
+        WiFiDrv::digitalWrite(27, LOW);  // Blue off
+        Serial.println("WiFi Status LED: GREEN (Connected)");
+        break;
     }
-  }
-  
-  if (abs(current.r - lastL2.r) > 5 || abs(current.g - lastL2.g) > 5 || abs(current.b - lastL2.b) > 5) {
-    if (&current == &currentL2Color) {
-      setL2Color(current);
-      lastL2 = current;
-    }
+    
+    lastStatus = status;
   }
 }

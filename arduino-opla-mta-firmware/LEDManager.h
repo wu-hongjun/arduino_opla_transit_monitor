@@ -7,6 +7,8 @@
 #define LEDMANAGER_H
 
 #include <Arduino.h>
+#include <WiFiNINA.h>
+#include <utility/wifi_drv.h>
 #include "config.h"
 #include "WiFiManager.h"
 enum DataStatus {
@@ -21,23 +23,7 @@ struct RGBColor {
 
 class LEDManager {
 private:
-  RGBColor currentL1Color;
-  RGBColor currentL2Color;
-  RGBColor targetL1Color;
-  RGBColor targetL2Color;
-  
-  unsigned long lastUpdate;
-  static const unsigned long UPDATE_INTERVAL_MS = 50; // 20 FPS for smooth transitions
-  
-  // Color definitions
-  static const RGBColor RED;
-  static const RGBColor YELLOW;
-  static const RGBColor GREEN;
-  static const RGBColor OFF;
-  
-  void setL1Color(RGBColor color);
-  void setL2Color(RGBColor color);
-  void interpolateColor(RGBColor& current, const RGBColor& target, float speed);
+  void setWiFiStatusLED(WiFiConnectionStatus status);
 
 public:
   LEDManager();

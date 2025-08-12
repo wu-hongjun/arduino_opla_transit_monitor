@@ -3,7 +3,7 @@
 
 # Board configuration for Arduino Opla (MKR WiFi 1010)
 BOARD = arduino:samd:mkrwifi1010
-PORT = /dev/cu.usbmodem*  # MKR WiFi 1010 port
+PORT = /dev/cu.usbmodem2101  # MKR WiFi 1010 port
 
 # Project settings
 SKETCH = arduino-opla-mta-firmware.ino
@@ -38,6 +38,7 @@ install-deps:
 	arduino-cli core install arduino:samd
 	arduino-cli lib install "WiFiNINA"
 	arduino-cli lib install "ArduinoHttpClient"
+	arduino-cli lib install "Arduino_OplaUI"
 
 # List available ports
 list-ports:
