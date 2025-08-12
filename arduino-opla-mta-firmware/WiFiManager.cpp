@@ -8,7 +8,7 @@ WiFiManager::WiFiManager() {
 }
 
 void WiFiManager::begin() {
-  WiFi.mode(WIFI_STA);
+  // WiFiNINA doesn't need mode setting like ESP32
   Serial.println("WiFi Manager initialized");
   attemptConnection();
 }

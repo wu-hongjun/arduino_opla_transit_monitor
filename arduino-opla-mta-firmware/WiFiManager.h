@@ -6,7 +6,7 @@
 #ifndef WIFIMANAGER_H
 #define WIFIMANAGER_H
 
-#include <WiFi.h>
+#include <WiFiNINA.h>
 #include "config.h"
 
 enum WiFiConnectionStatus {
@@ -35,3 +35,5 @@ public:
   void attemptConnection();
   void nextNetwork();
 };
+
+#endif

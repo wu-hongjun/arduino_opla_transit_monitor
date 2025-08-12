@@ -1,9 +1,9 @@
 # Makefile for Arduino Opla MTA Firmware
 # Requires arduino-cli to be installed
 
-# Board configuration for Arduino Opla (ESP32-S3 based)
-BOARD = esp32:esp32:arduino_opla
-PORT = /dev/cu.usbmodem*  # Update this to match your port
+# Board configuration for Arduino Opla (MKR WiFi 1010)
+BOARD = arduino:samd:mkrwifi1010
+PORT = /dev/cu.usbmodem*  # MKR WiFi 1010 port
 
 # Project settings
 SKETCH = arduino-opla-mta-firmware.ino
@@ -35,8 +35,9 @@ clean:
 # Install required dependencies
 install-deps:
 	arduino-cli core update-index
-	arduino-cli core install esp32:esp32
-	arduino-cli lib install "WiFi"
+	arduino-cli core install arduino:samd
+	arduino-cli lib install "WiFiNINA"
+	arduino-cli lib install "ArduinoHttpClient"
 
 # List available ports
 list-ports:

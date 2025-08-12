@@ -7,6 +7,10 @@
 #include "WiFiManager.h"
 #include "LEDManager.h"
 
+// Define API keys
+const char* MTA_API_KEY = "your_mta_api_key_here";
+const char* WEATHER_API_KEY = "your_openweather_api_key_here";
+
 WiFiManager wifiManager;
 LEDManager ledManager;
 

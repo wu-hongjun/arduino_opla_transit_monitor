@@ -8,8 +8,7 @@
 
 #include <Arduino.h>
 #include "config.h"
-
-enum WiFiConnectionStatus; // Forward declaration
+#include "WiFiManager.h"
 enum DataStatus {
   DATA_ERROR,
   DATA_LOADING,
@@ -47,3 +46,5 @@ public:
   void setWiFiStatus(WiFiConnectionStatus status);
   void setDataStatus(DataStatus status);
 };
+
+#endif

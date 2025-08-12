@@ -39,8 +39,8 @@ const float WEATHER_LATITUDE = 40.7589;   // NYC coordinates
 const float WEATHER_LONGITUDE = -73.9851;
 
 // API Keys - Replace with your actual keys
-const char* MTA_API_KEY = "your_mta_api_key_here";
-const char* WEATHER_API_KEY = "your_openweather_api_key_here";
+extern const char* MTA_API_KEY;
+extern const char* WEATHER_API_KEY;
 
 // Refresh Intervals (in seconds)
 const int MTA_REFRESH_INTERVAL = 120;     // 2 minutes

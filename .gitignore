@@ -1,0 +1,16 @@
+# Arduino build artifacts
+arduino-opla-mta-firmware/build/
+
+# IDE files
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
