@@ -1,0 +1,19 @@
+# Arduino CLI configuration for Arduino Opla MTA Firmware
+board_manager:
+  additional_urls:
+    - https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+
+directories:
+  data: .arduino15
+  downloads: .arduino15/staging
+  user: .arduino15
+
+logging:
+  level: info
+  format: text
+
+library:
+  enable_unsafe_install: false
+
+updater:
+  enable_notification: true
